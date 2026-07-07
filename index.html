@@ -121,6 +121,7 @@
     flex-direction: column;
     overflow: hidden;
     z-index: 5;
+    background: #f0f5fc;
   }
   .hero-copy {
     position: relative; z-index: 10;
@@ -136,82 +137,72 @@
     pointer-events: none;
   }
 
-  .hero-gradient {
+  .hero-gradient { display: none; }
+  .hero-blobs {
     position: absolute; inset: 0; z-index: 2;
-    background:
-      radial-gradient(ellipse 70% 60% at 75% 50%, rgba(194, 65, 12, 0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 50% 80% at 20% 80%, rgba(254, 243, 199, 0.12) 0%, transparent 60%);
-    pointer-events: none;
+    pointer-events: none; overflow: hidden;
   }
+  .hero-blobs span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+  }
+  /* Stor blå — bara övre halvan syns */
+  .hero-blobs .b1 {
+    width: 700px; height: 700px;
+    top: -350px; left: 38%;
+    background: radial-gradient(ellipse at center, #093E78 0%, transparent 70%);
+    opacity: 0.70;
+  }
+  /* Mindre orange — överlappar blå, till höger */
+  .hero-blobs .b2 {
+    width: 420px; height: 420px;
+    top: -210px; left: 58%;
+    background: radial-gradient(ellipse at center, #FF5E00 0%, transparent 70%);
+    opacity: 0.55;
+  }
+  .hero-blobs .b3 { display: none; }
+  .hero-blobs .b4 { display: none; }
+  .hero-blobs .b5 { display: none; }
   .hero-copy h1 {
     font-family: 'Poppins', sans-serif;
     font-weight: 700;
     font-size: 148px;
-    line-height: 0.95; letter-spacing: -0.03em;
-    color: var(--ink); margin-bottom: 0.15em;
+    line-height: 1; letter-spacing: -0.03em;
+    color: var(--ink); margin-bottom: 0;
   }
   .hero-copy h1 em { font-style: italic; color: var(--accent); }
+
+  /* Handdrawn circle around "Media" */
+  .media-circle {
+    position: relative;
+    display: inline-block;
+  }
   .h1-line {
     display: block;
-    overflow: hidden;
+    overflow: visible;
   }
+  .h1-line:nth-child(2) { margin-top: -0.2em; }
   .h1-line span {
     display: inline-block;
-    opacity: 0; transform: translateY(100%);
-    animation: h1Reveal 0.9s cubic-bezier(.16,1,.3,1) forwards;
-  }
-  .h1-line:nth-child(1) span { animation-delay: 1.1s; }
-  .h1-line:nth-child(2) span { animation-delay: 1.28s; }
-  @keyframes h1Reveal {
-    to { opacity: 1; transform: translateY(0); }
   }
   .scramble-word { display: inline-block; min-width: 4ch; }
   .hero-copy p {
     font-family: 'Poppins', sans-serif;
     font-size: 18px; line-height: 1.7; color: var(--ink-soft);
-    max-width: 420px; margin-top: 1.5rem;
-    opacity: 0; transform: translateY(12px);
-    animation: fadeUp 0.8s 1.5s ease forwards;
-  }
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
+    max-width: 520px; margin-top: 1rem;
   }
 
 
-  /* ── HERO SWOOSH ── */
-  .hero-swoosh {
-    position: absolute; inset: 0; z-index: 20;
-    pointer-events: none;
-    overflow: hidden;
-  }
-  /* Main panel */
-  .hero-swoosh-panel {
-    position: absolute; inset: 0;
-    background: #093E78;
-    transform-origin: left center;
-    clip-path: polygon(0 0, 105% 0, 100% 100%, 0 100%);
-    animation: swooshOut 0.85s 0.18s cubic-bezier(.77,0,.18,1) forwards;
-  }
-  /* Tail — slightly offset, darker, trails behind */
-  .hero-swoosh-tail {
-    position: absolute; inset: 0;
-    background: #052d5a;
-    clip-path: polygon(0 0, 105% 0, 100% 100%, 0 100%);
-    animation: swooshOut 0.85s 0.06s cubic-bezier(.77,0,.18,1) forwards;
-  }
-  @keyframes swooshOut {
-    0%   { transform: translateX(0) skewX(-6deg); }
-    100% { transform: translateX(110%) skewX(-6deg); }
-  }
+
 
 
 
   /* ── HERO BUTTONS ── */
   .hero-buttons {
     display: flex; gap: 16px; flex-wrap: wrap;
-    margin-top: 3rem;
-    opacity: 0; transform: translateY(12px);
-    animation: fadeUp 0.8s 1.7s ease forwards;
+    margin-top: 1.5rem;
+
   }
   .hero-btn {
     font-family: 'Poppins', sans-serif;
@@ -223,14 +214,21 @@
     display: inline-flex; align-items: center;
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
-  .hero-btn:hover { transform: translateY(-2px); opacity: 0.92; }
+  .hero-btn:hover { transform: translateY(-2px); }
   .hero-btn-primary {
     background: #0A4D91;
     color: #ffffff;
   }
+  .hero-btn-primary:hover {
+    opacity: 0.92;
+  }
   .hero-btn-secondary {
-    background: #E5E5E5;
+    background: #d6d6d6;
     color: #1a1714;
+    border: none;
+  }
+  .hero-btn-secondary:hover {
+    background: #c2c2c2;
   }
 
 
@@ -251,25 +249,25 @@
     --sec-link: #093E78;
 
   }
-  .service-section:nth-child(1) {
+  .service-section.palette-s1 {
     background: var(--s1-bg);
     --sec-ink: var(--s1-ink);
     --sec-soft: var(--s1-soft);
     --sec-muted: var(--s1-muted);
   }
-  .service-section:nth-child(2) {
+  .service-section.palette-s2 {
     background: var(--s2-bg);
     --sec-ink: var(--s2-ink);
     --sec-soft: var(--s2-soft);
     --sec-muted: var(--s2-muted);
   }
-  .service-section:nth-child(3) {
+  .service-section.palette-s3 {
     background: var(--s3-bg);
     --sec-ink: var(--s3-ink);
     --sec-soft: var(--s3-soft);
     --sec-muted: var(--s3-muted);
   }
-  .service-section:nth-child(4) {
+  .service-section.palette-s4 {
     background: var(--s4-bg);
     --sec-ink: var(--s4-ink);
     --sec-soft: var(--s4-soft);
@@ -290,6 +288,19 @@
     grid-template-columns: 1fr 480px;
     gap: 60px;
     align-items: center;
+  }
+  /* Image on left, text on right */
+  .slot.slot--img-left {
+    grid-template-columns: 480px 1fr;
+  }
+  .slot.slot--img-left .slot-img {
+    order: -1;
+  }
+  .slot.slot--img-left .slot-left {
+    transform: translateX(40px);
+  }
+  .slot.slot--img-left .slot-left.in-view {
+    transform: translateX(0);
   }
   .slot-left {
     display: flex;
@@ -359,13 +370,13 @@
   .view-project:hover svg { transform: translateX(3px); }
 
   /* Light buttons for dark section backgrounds */
-  .service-section:nth-child(3) .view-project,
-  .service-section:nth-child(4) .view-project {
+  .service-section.palette-s3 .view-project,
+  .service-section.palette-s4 .view-project {
     background: rgba(255,255,255,0.15);
     color: #ffffff;
   }
-  .service-section:nth-child(3) .view-project:hover,
-  .service-section:nth-child(4) .view-project:hover {
+  .service-section.palette-s3 .view-project:hover,
+  .service-section.palette-s4 .view-project:hover {
     background: #FF5E00;
     color: #ffffff;
   }
@@ -374,8 +385,11 @@
 
   @media (max-width: 900px) {
     .slot { grid-template-columns: 1fr; }
-    .slot-left { order: 2; }
+    .slot--img-left { grid-template-columns: 1fr; }
+    .slot-left { order: 2; transform: none !important; }
     .slot-img { order: 1; aspect-ratio: 3/2; }
+    .slot--img-left .slot-img { order: 1; }
+    .slot--img-left .slot-left { order: 2; }
     .slot-caption h3 { font-size: 48px; }
   }
   @media (max-width: 760px) {
@@ -390,8 +404,7 @@
     position: relative;
     z-index: 10;
     width: 100%;
-    padding: 48px 0;
-
+    padding: 32px 0;
   }
   .carousel-section {
 
@@ -407,29 +420,14 @@
     padding: 0 40px;
     overflow: hidden;
     position: relative;
-  }
-  .carousel-overflow::before,
-  .carousel-overflow::after {
-    content: '';
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 120px;
-    z-index: 2;
-    pointer-events: none;
-  }
-  .carousel-overflow::before {
-    left: 0;
-    background: linear-gradient(to right, #ffffff, transparent);
-  }
-  .carousel-overflow::after {
-    right: 0;
-    background: linear-gradient(to left, #ffffff, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 120px, #000 calc(100% - 120px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0, #000 120px, #000 calc(100% - 120px), transparent 100%);
   }
   .carousel-track {
     display: flex;
-    gap: 80px;
+    gap: 32px;
     width: max-content;
-    animation: carouselScroll 30s linear infinite;
+    animation: carouselScroll 40s linear infinite;
   }
   .carousel-track:hover { animation-play-state: paused; }
   @media (prefers-reduced-motion: reduce) {
@@ -442,24 +440,25 @@
   .carousel-logo {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 32px;
     white-space: nowrap;
-    opacity: 0.45;
-    transition: opacity 0.2s;
   }
-  .carousel-logo:hover { opacity: 0.85; }
-  .carousel-logo-mark {
-    width: 36px; height: 36px;
-    border-radius: 8px;
-    background: #093E78;
-    flex-shrink: 0;
-  }
-  .carousel-logo-name {
+  .carousel-word {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #093E78;
-    letter-spacing: -0.01em;
+    font-size: 32px;
+    font-weight: 700;
+    font-style: italic;
+    color: #1a1714;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+  .carousel-sep {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    font-style: italic;
+    color: #FF5E00;
+    line-height: 1;
+    user-select: none;
   }
 
   .statement-section {
@@ -476,7 +475,7 @@
     font-weight: 700;
     line-height: 1.15;
     letter-spacing: -0.02em;
-    color: #093E78;
+    color: #1a1714;
     max-width: 900px;
   }
   .statement-inner p em {
@@ -490,88 +489,102 @@
 
 
   .contact-section {
-    background: #04182D;
+    background: #f4f7fb;
     padding: 140px 0;
   }
   .contact-inner {
     max-width: 1240px; margin: 0 auto;
     padding: 0 40px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 120px;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 100px;
     align-items: start;
   }
   .contact-left h2 {
     font-family: 'Poppins', sans-serif;
-    font-size: 56px; font-weight: 700;
-    line-height: 1.05; letter-spacing: -0.02em;
-    color: #ffffff;
-    margin-bottom: 1.5rem;
+    font-size: 48px; font-weight: 700;
+    line-height: 1.1; letter-spacing: -0.02em;
+    color: #04182D;
+    margin-bottom: 1.25rem;
   }
   .contact-left h2 em {
     font-style: italic;
-    color: #a8c8eb;
+    color: #093E78;
   }
   .contact-left p {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.125rem; line-height: 1.7;
-    color: rgba(255,255,255,0.55);
-    max-width: 380px;
+    font-size: 1rem; line-height: 1.75;
+    color: #5a6a7a;
+    max-width: 360px;
   }
   .contact-form {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 32px rgba(9,62,120,0.08);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
   }
   .form-field {
     display: flex;
     flex-direction: column;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
-    padding: 28px 0;
-    transition: border-color 0.2s;
+    gap: 7px;
+    justify-content: flex-end;
   }
-  .form-field:first-child { border-top: 1px solid rgba(255,255,255,0.15); }
-  .form-field:focus-within { border-bottom-color: rgba(255,255,255,0.5); }
+  .form-field.full { grid-column: 1 / -1; }
   .form-field label {
     font-family: 'Poppins', sans-serif;
-    font-size: 0.7rem; font-weight: 500;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: rgba(255,255,255,0.60);
-    margin-bottom: 10px;
+    font-size: 0.75rem; font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #04182D;
   }
   .form-field input,
   .form-field textarea {
     font-family: 'Poppins', sans-serif;
-    font-size: 1.125rem; font-weight: 400;
-    color: #ffffff;
-    background: none;
-    border: none; outline: none;
-    padding: 0;
+    font-size: 0.95rem; font-weight: 400;
+    color: #1a1714;
+    background: #f4f7fb;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    padding: 12px 14px;
     resize: none;
     width: 100%;
+    height: 46px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .form-field textarea {
+    height: 120px;
+    padding-top: 12px;
+  }
+  .form-field input:focus,
+  .form-field textarea:focus {
+    border-color: #093E78;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(9,62,120,0.08);
   }
   .form-field input::placeholder,
   .form-field textarea::placeholder {
-    color: rgba(255,255,255,0.2);
+    color: #b0bec8;
   }
-  .form-field textarea { min-height: 80px; }
   .contact-submit {
-    margin-top: 40px;
-    align-self: flex-start;
     font-family: 'Poppins', sans-serif;
-    font-size: 1rem; font-weight: 600;
-    color: #04182D;
-    background: #ffffff;
+    font-size: 0.95rem; font-weight: 600;
+    color: #ffffff;
+    background: #093E78;
     border: none; cursor: pointer;
-    padding: 1rem 2rem;
-    border-radius: 8px;
+    padding: 13px 28px;
+    border-radius: 10px;
     display: inline-flex; align-items: center; gap: 10px;
+    flex-shrink: 0;
     transition: background 0.2s, gap 0.25s;
     text-decoration: none;
   }
-  .contact-submit:hover { background: #a8c8eb; gap: 16px; }
+  .contact-submit:hover { background: #0a4d91; gap: 16px; }
   .contact-submit svg {
-    width: 18px; height: 18px;
+    width: 16px; height: 16px;
     stroke: currentColor; fill: none; stroke-width: 2.2;
     transition: transform 0.25s;
   }
@@ -584,9 +597,10 @@
     .contact-section { padding: 100px 0; }
     .contact-inner { padding: 0 24px; }
     .contact-left h2 { font-size: 32px; }
+    .contact-form { padding: 28px 20px; grid-template-columns: 1fr; }
   }
 
-  .cards { position: fixed; inset: 0; pointer-events: none; z-index: 50; }
+  .cards { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0; }
   .card {
     position: absolute;
     border-radius: var(--card-radius); overflow: hidden;
@@ -617,7 +631,7 @@
   .slot-caption h3 {
     position: relative;
     display: block;
-    padding-bottom: 24px;
+
   }
   .slot-caption h3::after {
     content: '';
@@ -669,7 +683,75 @@
     color: var(--accent);
   }
 
-  /* Skip link */
+  /* ── WORD ARROW ── */
+  .word-arrow {
+    position: relative;
+    display: inline-block;
+  }
+  .arrow-svg {
+    position: absolute;
+    right: -154px;
+    top: -36px;
+    width: 180px;
+    height: 180px;
+    overflow: visible;
+    pointer-events: none;
+  }
+  .arrow-svg path {
+    fill: #FF5E00;
+    clip-path: inset(0 100% 0 0);
+    transition: clip-path 1s cubic-bezier(.16,1,.3,1);
+  }
+  .word-arrow.arrow-drawn .arrow-svg path {
+    clip-path: inset(0 0% 0 0);
+  }
+
+  /* ── ARC UNDERLINE ── */
+  .h3-underline {
+    position: relative;
+    display: inline-block;
+  }
+  .slot-caption .h3-underline::after {
+    display: none;
+  }
+  .arc-underline {
+    display: block;
+    width: 100%;
+    height: 12px;
+    margin-top: 10px;
+    overflow: visible;
+  }
+  .arc-underline path {
+    stroke-dasharray: 260;
+    stroke-dashoffset: 260;
+    transition: stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1);
+  }
+  .h3-underline.arc-drawn .arc-underline path {
+    stroke-dashoffset: 0;
+  }
+
+  /* ── PAGE LOAD ANIMATION ── */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(32px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(120px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .hero-copy h1,
+  .hero-copy p,
+  .hero-buttons,
+  .hero-carousel {
+    opacity: 0;
+  }
+  .hero-copy h1     { animation: slideUp 0.8s cubic-bezier(.16,1,.3,1) 0.1s forwards; }
+  .hero-copy p      { animation: slideUp 0.8s cubic-bezier(.16,1,.3,1) 0.25s forwards; }
+  .hero-buttons     { animation: slideUp 0.8s cubic-bezier(.16,1,.3,1) 0.4s forwards; }
+  .hero-carousel    { animation: slideUp 0.6s cubic-bezier(.16,1,.3,1) 0.55s forwards; }
+
+
   .skip-link {
     position: absolute;
     top: -100px;
@@ -719,10 +801,10 @@
   <main id="main-content">
   <section class="hero">
     <div class="hero-grid"></div>
+    <div class="hero-blobs"><span class="b1"></span><span class="b2"></span><span class="b3"></span><span class="b4"></span><span class="b5"></span></div>
     <div class="hero-gradient"></div>
-    <div class="hero-swoosh"><div class="hero-swoosh-tail"></div><div class="hero-swoosh-panel"></div></div>
     <div class="hero-copy">
-      <h1><span class="h1-line"><span style="color:#093E78;">Bovision</span></span><span class="h1-line"><span style="font-style:italic; color:#1a1714;">Media</span></span></h1>
+      <h1><span class="h1-line"><span style="color:#1a1714;">Bovision</span></span><span class="h1-line"><span style="font-style:italic; color:#093E78; font-size:100px;"><span class="media-circle">Media</span></span></span></h1>
       <p style="color:#595959;">Marknadsföring för mäklare och fastighetsägare. Vi förädlar bostadens värde genom premium visualisering.</p>
       <div class="hero-buttons">
         <a href="#" class="hero-btn hero-btn-primary">Kontakta oss</a>
@@ -730,38 +812,38 @@
       </div>
     </div>
 
-    <!-- Logo carousel inside hero -->
+    <!-- Keyword banner inside hero -->
     <div class="hero-carousel">
       <div class="carousel-overflow">
         <div class="carousel-track">
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Mäklarbyrån</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Fastighetshuset</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Nordhem</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Stadshem</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Bostadsgruppen</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Hemverket</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Lägenhetsbyrån</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Villakungen</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Mäklarbyrån</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Fastighetshuset</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Nordhem</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Stadshem</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Bostadsgruppen</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Hemverket</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Lägenhetsbyrån</span></div>
-        <div class="carousel-logo"><div class="carousel-logo-mark"></div><span class="carousel-logo-name">Villakungen</span></div>
+          <div class="carousel-logo">
+            <span class="carousel-word">Rådgivning</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Strategi</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Textproduktion</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Digital annonsering</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Synlighet</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Optimering</span><span class="carousel-sep">·</span>
+          </div>
+          <div class="carousel-logo" aria-hidden="true">
+            <span class="carousel-word">Rådgivning</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Strategi</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Textproduktion</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Digital annonsering</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Synlighet</span><span class="carousel-sep">·</span>
+            <span class="carousel-word">Optimering</span><span class="carousel-sep">·</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <div id="projects">
-    <section class="service-section">
+    <section class="service-section palette-s1">
       <div class="service-inner">
         <div class="slot">
           <div class="slot-left">
             <div class="slot-caption">
-              <h3>Strategi & Rådgivning</h3>
+              <h3 class="h3-underline">Strategi &amp; Rådgivning<svg class="arc-underline" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none"><path d="M2 10 C 40 1, 100 16, 160 3, 218 8" stroke="#FF5E00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></h3>
               <p>Vi erbjuder strategisk rådgivning och support inom medieval, innehåll och digitala kanaler — anpassat efter era mål.</p>
               <a class="view-project" href="#">Utforska strategitjänsten <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
@@ -771,12 +853,12 @@
       </div>
     </section>
 
-    <section class="service-section">
+    <section class="service-section palette-s4">
       <div class="service-inner">
-        <div class="slot">
+        <div class="slot slot--img-left">
           <div class="slot-left">
             <div class="slot-caption">
-              <h3>Innehåll & Textproduktion</h3>
+              <h3 class="h3-underline">Innehåll &amp; Textproduktion<svg class="arc-underline" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none"><path d="M2 7 C 30 13, 70 2, 120 10 C 160 16, 195 4, 218 8" stroke="#FF5E00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></h3>
               <p>Vi skapar engagerande innehåll, film och texter som stärker ert varumärke och driver fler affärer.</p>
               <a class="view-project" href="#">Se innehållsexempel <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
@@ -786,12 +868,12 @@
       </div>
     </section>
 
-    <section class="service-section">
+    <section class="service-section palette-s1">
       <div class="service-inner">
         <div class="slot">
           <div class="slot-left">
             <div class="slot-caption">
-              <h3>Digital Annonsering</h3>
+              <h3 class="h3-underline">Digital Annonsering<svg class="arc-underline" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none"><path d="M2 10 C 50 10, 90 3, 140 5 C 175 6, 200 10, 218 6" stroke="#FF5E00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></h3>
               <p>Vi sätter upp och optimerar er annonsering i sociala medier, Google och YouTube för att nå rätt målgrupper och skapa mätbara resultat.</p>
               <a class="view-project" href="#">Se annonseringstjänsten <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
@@ -801,12 +883,12 @@
       </div>
     </section>
 
-    <section class="service-section">
+    <section class="service-section palette-s4">
       <div class="service-inner">
-        <div class="slot">
+        <div class="slot slot--img-left">
           <div class="slot-left">
             <div class="slot-caption">
-              <h3>Synlighet & Optimering</h3>
+              <h3 class="h3-underline">Synlighet &amp; Optimering<svg class="arc-underline" viewBox="0 0 220 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="none"><path d="M2 6 C 60 6, 100 14, 150 12 C 185 10, 210 6, 218 7" stroke="#FF5E00" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></h3>
               <p>Vi ökar er synlighet online genom SEO och GEO-optimering för sökmotorer och AI, vilket leder till mer relevant trafik och fler affärer.</p>
               <a class="view-project" href="#">Förbättra din synlighet <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
             </div>
@@ -820,7 +902,7 @@
   <!-- Statement -->
   <section class="statement-section">
     <div class="statement-inner">
-      <p>Vi hjälper mäklare och fastighetsägare att synas, sälja mer — och göra det med <em>stil.</em></p>
+      <p>Vi hjälper mäklare och fastighetsägare att synas, sälja mer — och göra det med <em class="word-arrow">stil.<svg class="arrow-svg" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path class="arrow-shaft" d="M107.146 142.269C125.384 144.953 146.652 142.079 163.797 135.45C173.52 131.691 182.49 126.103 190.882 119.964C195.229 116.786 199.388 113.435 203.397 109.843C204.561 108.8 208.513 103.535 210.051 104.033C215.226 105.711 197.642 121.444 195.628 123.003C187.11 129.591 178.14 135.855 168.232 140.158C151.612 147.375 131.792 152.046 113.622 150.799C103.042 150.072 92.4314 149.455 82.1221 146.392C77.7868 145.104 73.5611 143.414 69.5428 141.335C66.6996 139.864 63.8263 138.288 61.19 136.465C59.2378 135.115 57.4225 132.381 55.3609 131.427C55.1392 135.459 58.5601 139.812 58.6415 144.004C58.7381 148.988 55.1849 146.831 53.5088 143.973C50.8413 139.425 48.9581 134.472 46.8562 129.652C45.0651 125.544 41.7831 120.726 46.2253 117.514C50.1256 114.694 55.2449 113.327 59.5964 111.413C62.5062 110.133 68.1756 105.846 71.4441 107.77C81.6581 113.785 56.3531 119.379 54.7944 120.517C56.1168 121.844 58.2014 122.599 59.7545 123.7C62.0008 125.291 63.995 127.187 66.2502 128.77C70.5027 131.754 75.2197 134.36 79.9775 136.442C88.2291 140.053 98.1542 142.199 107.146 142.269Z" fill="#FF5E00"/></svg></em></p>
     </div>
   </section>
 
@@ -828,30 +910,40 @@
   <section class="contact-section">
     <div class="contact-inner">
       <div class="contact-left">
-        <h2>Låt oss prata om ditt <em>nästa projekt</em></h2>
-        <p>Fyll i formuläret så återkommer vi inom 24 timmar. Eller ring oss direkt om du föredrar det.</p>
+        <h2>Vill du veta mer om våra <em>tjänster?</em></h2>
+        <p>Vill du ta ditt byggprojekt till nya höjder? Lämna dina kontaktuppgifter så kontaktar vi dig och berättar mer om hur vi kan hjälpa dig.</p>
       </div>
       <div class="contact-form">
         <div class="form-field">
-          <label for="field-namn">Namn</label>
-          <input id="field-namn" type="text" placeholder="Ditt namn" autocomplete="name">
+          <label for="field-fornamn">Förnamn</label>
+          <input id="field-fornamn" type="text" placeholder="Ditt förnamn" autocomplete="given-name">
         </div>
         <div class="form-field">
-          <label for="field-epost">E-post</label>
-          <input id="field-epost" type="email" placeholder="din@epost.se" autocomplete="email">
+          <label for="field-efternamn">Efternamn</label>
+          <input id="field-efternamn" type="text" placeholder="Ditt efternamn" autocomplete="family-name">
+        </div>
+        <div class="form-field">
+          <label for="field-telefon">Telefon</label>
+          <input id="field-telefon" type="tel" placeholder="07X-XXX XX XX" autocomplete="tel">
         </div>
         <div class="form-field">
           <label for="field-foretag">Företag</label>
           <input id="field-foretag" type="text" placeholder="Ditt företag" autocomplete="organization">
         </div>
-        <div class="form-field">
+        <div class="form-field full">
           <label for="field-meddelande">Meddelande</label>
           <textarea id="field-meddelande" placeholder="Berätta om ditt projekt..."></textarea>
         </div>
-        <button class="contact-submit">
-          Skicka meddelande
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
+        <div class="full" style="display: flex; align-items: center; gap: 10px; grid-column: 1 / -1;">
+          <input id="field-gdpr" type="checkbox" style="accent-color: #FF5E00; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer;">
+          <label for="field-gdpr" style="font-size: 0.85rem; color: #5a6a7a; line-height: 1; cursor: pointer;">Jag accepterar Bovisions <a href="#" style="color: #FF5E00; text-decoration: underline; text-underline-offset: 3px;">integritetspolicy</a>.</label>
+        </div>
+        <div style="grid-column: 1 / -1;">
+          <button class="contact-submit">
+            Skicka
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -860,10 +952,10 @@
 
   <!-- moving overlay cards -->
   <div class="cards" id="cards">
-    <div class="card"><img alt="" src="bild1.jpg"></div>
-    <div class="card"><img alt="" src="bild2.jpg"></div>    
-    <div class="card"><img alt="" src="bild3.jpg"></div>
-    <div class="card"><img alt="" src="bild4.jpg"></div>
+    <div class="card"><img alt="" src="cloud.jpg"></div>
+    <div class="card"><img alt="" src="horse.jpg"></div>    
+    <div class="card"><img alt="" src="boat.jpg"></div>
+    <div class="card"><img alt="" src="cloud.jpg"></div>
   </div>
 
 <script>
@@ -996,6 +1088,37 @@ function render() {
 addEventListener('scroll', render, { passive: true });
 addEventListener('resize', render);
 render();
+document.getElementById('cards').style.opacity = '1';
+
+/* ── WORD ARROW: draw on scroll ── */
+(function() {
+  const el = document.querySelector('.word-arrow');
+  if (!el) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        el.classList.add('arrow-drawn');
+        observer.unobserve(el);
+      }
+    });
+  }, { threshold: 0.8 });
+  observer.observe(el);
+})();
+
+/* ── ARC UNDERLINE: draw on scroll ── */
+(function() {
+  const h3s = document.querySelectorAll('.h3-underline');
+  if (!h3s.length) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('arc-drawn');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.6 });
+  h3s.forEach(h3 => observer.observe(h3));
+})();
 
 /* ── SLOT-LEFT: slide in when scrolled into view ── */
 (function() {
