@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital annonsering — Bovision Media</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #ffffff;
+    --fg: #1a1714;
+    --ink: #1a1714;
+    --ink-soft: #3d3830;
+    --muted: #9b9590;
+    --muted-aa: #767068;
+    --accent: #093E78;
+    --orange: #FF5E00;
+    --green: #2D8C4E;
+    --card-radius: 16px;
+    --nav-h: 56px;
+
+    --s1-bg: #ddeaf8; --s1-ink: #05244a; --s1-soft: #1a4070; --s1-muted: #2e5a8e;
+    --s2-bg: #a8c8eb; --s2-ink: #041e3d; --s2-soft: #0d3362; --s2-muted: #1e4e82;
+    --s3-bg: #3a7ab8; --s3-ink: #ffffff; --s3-soft: rgba(255,255,255,1); --s3-muted: rgba(255,255,255,0.55);
+    --s4-bg: #04182D; --s4-ink: #ffffff; --s4-soft: rgba(255,255,255,0.78); --s4-muted: rgba(255,255,255,0.5);
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ── NAV — fixed 56px ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    height: var(--nav-h);
+    background: #093E78;
+    transition: box-shadow 0.3s;
+  }
+  nav.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.18); }
+  .nav-inner {
+    max-width: 1240px; margin: 0 auto; width: 100%;
+    height: 100%;
+    display: flex; align-items: center;
+    padding: 0 40px;
+    gap: 32px;
+  }
+
+  /* Logotyp */
+  .nav-logo {
+    display: flex; align-items: center; gap: 8px;
+    text-decoration: none; flex-shrink: 0;
+  }
+  .nav-logo-mark {
+    width: 28px; height: 28px;
+    background: #FF5E00;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .nav-logo-mark svg { width: 16px; height: 16px; fill: #fff; }
+  .nav-logo-text {
+    font-size: 0.9rem; font-weight: 600; letter-spacing: 0.01em;
+    color: #fff;
+  }
+  .nav-logo-text span { color: #FF5E00; }
+
+  /* Primär nav */
+  .nav-links {
+    display: flex; gap: 0; list-style: none;
+    flex: 1;
+  }
+  .nav-links a {
+    font-size: 0.82rem; font-weight: 500; letter-spacing: 0.01em;
+    color: rgba(255,255,255,0.78); text-decoration: none;
+    padding: 0 16px; height: 56px;
+    display: flex; align-items: center;
+    transition: color 0.15s, background 0.15s;
+    border-bottom: 2px solid transparent;
+  }
+  .nav-links a:hover {
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+  }
+  .nav-links a.active {
+    color: #fff;
+    border-bottom-color: #FF5E00;
+  }
+
+  /* Login */
+  .nav-login {
+    flex-shrink: 0;
+    font-size: 0.82rem; font-weight: 600;
+    color: #fff; text-decoration: none;
+    padding: 0 18px; height: 34px;
+    display: flex; align-items: center;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    border-radius: 6px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .nav-login:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.55);
+  }
+
+  /* Hamburger */
+  .nav-toggle {
+    display: none; width: 30px; height: 22px;
+    background: none; border: 0; padding: 0;
+    cursor: pointer; position: relative; z-index: 120;
+  }
+  .nav-toggle span {
+    position: absolute; left: 0; right: 0; height: 2px;
+    background: #fff; border-radius: 2px;
+    transition: transform .3s ease, opacity .25s ease, top .3s ease;
+  }
+  .nav-toggle span:nth-child(1) { top: 0; }
+  .nav-toggle span:nth-child(2) { top: 10px; }
+  .nav-toggle span:nth-child(3) { top: 20px; }
+  .nav-toggle.open span:nth-child(1) { top: 10px; transform: rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { top: 10px; transform: rotate(-45deg); }
+  @media (max-width: 760px) {
+    .nav-inner { padding: 0 20px; gap: 0; justify-content: space-between; }
+    .nav-toggle { display: block; }
+    .nav-login { display: none; }
+    .nav-links {
+      position: fixed; inset: 0; top: var(--nav-h);
+      flex-direction: column; justify-content: center; align-items: center;
+      gap: 0; background: #093E78;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+    }
+    .nav-links.open { transform: translateX(0); }
+    .nav-links a { font-size: 1.1rem; height: auto; padding: 1rem 2rem; border-bottom: none; }
+  }
+
+  /* ── BREADCRUMBS — sits flush under nav ── */
+  .breadcrumb {
+    position: relative;
+    top: 0;
+    left: 0; right: 0;
+    z-index: 90;
+    background: #ffffff;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    margin-top: var(--nav-h);
+  }
+  .breadcrumb-inner {
+    max-width: 1240px; margin: 0 auto; width: 100%;
+    padding: 0 40px;
+    height: 36px;
+    display: flex; align-items: center;
+  }
+  .breadcrumb ol {
+    list-style: none;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .breadcrumb li {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.7rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted-aa);
+  }
+  .breadcrumb li a { color: var(--accent); text-decoration: none; transition: opacity 0.2s; }
+  .breadcrumb li a:hover { opacity: 0.65; }
+  .breadcrumb li + li::before { content: '/'; color: var(--muted); font-weight: 300; }
+  .breadcrumb li:last-child { color: var(--ink-soft); }
+  @media (max-width: 760px) {
+    .breadcrumb-inner { padding: 0 24px; }
+  }
+
+  /* ── PAGE HERO ── */
+  .page-hero {
+    background: url('bild1.jpg') center center / cover no-repeat;
+    position: relative;
+    overflow: visible;
+    overflow-x: clip;
+    margin-top: var(--nav-h);
+    padding: 48px 0 56px;
+  }
+  .page-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(4, 24, 45, 0.72);
+    z-index: 1;
+  }
+  .page-hero::after { display: none; }
+  .page-hero-content {
+    position: relative; z-index: 2;
+    max-width: 1240px; margin: 0 auto;
+    padding: 0 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 40px;
+  }
+  .page-hero-text {
+    flex: 1;
+    min-width: 0;
+  }
+  /* breadcrumb inside hero */
+  .page-hero-breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    list-style: none;
+    margin-bottom: 28px;
+  }
+  .page-hero-breadcrumb li {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.68rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+  }
+  .page-hero-breadcrumb li a {
+    color: rgba(255,255,255,0.55);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .page-hero-breadcrumb li a:hover { color: #fff; }
+  .page-hero-breadcrumb li + li::before { content: '/'; opacity: 0.3; }
+  .page-hero-breadcrumb li:last-child { color: rgba(255,255,255,0.75); }
+  .page-hero h1 {
+    font-size: clamp(40px, 5vw, 72px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: #ffffff;
+    margin-bottom: 1rem;
+  }
+  .page-hero h1 em { font-style: italic; color: #ffffff; }
+  .page-hero-desc {
+    font-size: 1rem; line-height: 1.75;
+    color: rgba(255,255,255,0.8);
+    max-width: 520px;
+  }
+  @media (max-width: 760px) {
+    .page-hero { padding: 40px 0 48px; }
+    .page-hero-content { padding: 0 24px; }
+  }
+
+  /* ── SERVICE SECTIONS ── */
+  .service-section { width: 100%; padding: 180px 0; }
+  .service-section.palette-s1 { background: #ffffff; --sec-ink: var(--ink); --sec-soft: var(--ink-soft); --sec-muted: var(--muted-aa); }
+  .service-section.palette-s2 { background: #04182D; --sec-ink: #ffffff; --sec-soft: #fcfcfc; --sec-muted: rgba(255,255,255,0.45); }
+  .service-section.palette-s3 { background: #ffffff; --sec-ink: var(--ink); --sec-soft: var(--ink-soft); --sec-muted: var(--muted-aa); }
+  .service-section.palette-s4 { background: #04182D; --sec-ink: #ffffff; --sec-soft: #fcfcfc; --sec-muted: rgba(255,255,255,0.45); }
+  .service-inner { max-width: 1240px; margin: 0 auto; padding: 0 40px; }
+
+  /* ── IMAGE SCROLL-IN FROM BOTTOM ── */
+  .slot-media {
+    position: relative;
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 0.7s cubic-bezier(.16,1,.3,1), transform 0.7s cubic-bezier(.16,1,.3,1);
+  }
+  .slot-media.in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ── SLOT ── */
+  .slot { display: grid; grid-template-columns: 1fr 480px; gap: 80px; align-items: center; }
+  .slot.slot--img-left { grid-template-columns: 480px 1fr; }
+  .slot.slot--img-left .slot-media { order: -1; }
+  .slot.slot--img-left .slot-left { transform: translateX(40px); }
+  .slot.slot--img-left .slot-left.in-view { transform: translateX(0); }
+  .slot-left {
+    display: flex; flex-direction: column; justify-content: center;
+    opacity: 0; transform: translateX(-40px);
+    transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1);
+  }
+  .slot-left.in-view { opacity: 1; transform: translateX(0); }
+  .slot-media { position: relative; }
+  .slot-media .img-main { display: block; width: 100%; aspect-ratio: 3/4; border-radius: 20px; overflow: hidden; }
+  .slot-media .img-landscape { display: block; width: 100%; aspect-ratio: 4/3; border-radius: 28px; overflow: hidden; }
+  .slot-media .img-square { display: block; width: 100%; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden; }
+  .slot-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* dual overlapping */
+  .slot-media.dual { height: 520px; }
+  .slot-media.dual .img-back {
+    position: absolute; width: 72%; aspect-ratio: 3/4;
+    border-radius: 20px; overflow: hidden;
+    top: 0; right: 0; z-index: 1;
+  }
+  .slot-media.dual .img-front {
+    position: absolute; width: 58%; aspect-ratio: 1/1;
+    border-radius: 16px; overflow: hidden;
+    bottom: 0; left: 0; z-index: 2;
+    box-shadow: 0 12px 40px rgba(4,24,45,0.18);
+  }
+  .slot-media.dual img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .slot-caption { display: flex; flex-direction: column; }
+  .slot-number {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 1rem; display: block;
+  }
+  .slot-caption h2 {
+    font-size: clamp(36px, 5vw, 64px); font-weight: 700;
+    color: var(--sec-ink, var(--accent));
+    letter-spacing: -0.03em; line-height: 1.1; margin-bottom: 24px;
+  }
+  .slot-caption h2 em { font-style: italic; color: var(--accent); }
+  .service-section.palette-s2 .slot-caption h2 em,
+  .service-section.palette-s4 .slot-caption h2 em { color: #6aaee8; }
+  .slot-caption p { font-size: 1.1rem; line-height: 1.75; color: var(--sec-soft, var(--muted-aa)); }
+
+  /* ── STATEMENT / PARALLAX SECTION ── */
+  .statement-section {
+    position: relative;
+    padding: 180px 0;
+    overflow: hidden;
+  }
+  .statement-bg {
+    position: absolute;
+    top: -40%; bottom: -40%;
+    left: 0; right: 0;
+    z-index: 0;
+    will-change: transform;
+  }
+  .statement-bg img {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: center; display: block;
+  }
+  .statement-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background: rgba(4,24,45,0.62);
+  }
+  .statement-inner {
+    position: relative; z-index: 2;
+    max-width: 1240px; margin: 0 auto; padding: 0 40px;
+  }
+  .statement-inner p {
+    font-size: clamp(32px, 4vw, 56px); font-weight: 700;
+    line-height: 1.2; letter-spacing: -0.02em;
+    max-width: 900px;
+  }
+  .reveal-word {
+    display: inline-block;
+    color: rgba(255,255,255,0.2);
+    transition: color 0.1s ease;
+    white-space: pre;
+  }
+  .reveal-word.lit { color: #ffffff; }
+
+  /* ── CONTACT ── */
+  .contact-section { background: #f4f7fb; padding: 140px 0; }
+  .contact-inner {
+    max-width: 1240px; margin: 0 auto; padding: 0 40px;
+    display: grid; grid-template-columns: 1fr 1.4fr; gap: 100px; align-items: start;
+  }
+  .contact-left h2 {
+    font-size: 48px; font-weight: 700; line-height: 1.15;
+    letter-spacing: -0.02em; color: #04182D; margin-bottom: 1.25rem;
+  }
+  .contact-left h2 em { font-style: italic; color: #093E78; }
+  .contact-left p { font-size: 1rem; line-height: 1.75; color: #5a6a7a; max-width: 360px; }
+  .contact-form {
+    background: #ffffff; border-radius: 20px; padding: 40px;
+    box-shadow: 0 4px 32px rgba(9,62,120,0.08);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 7px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; color: #04182D; }
+  .form-field input, .form-field textarea {
+    font-family: 'Poppins', sans-serif; font-size: 0.95rem; color: #1a1714;
+    background: #f4f7fb; border: 1.5px solid #e2e8f0; border-radius: 10px;
+    outline: none; padding: 12px 14px; resize: none; width: 100%; height: 46px;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+  }
+  .form-field textarea { height: 120px; padding-top: 12px; }
+  .form-field input:focus, .form-field textarea:focus {
+    border-color: #093E78; background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(9,62,120,0.08);
+  }
+  .form-field input::placeholder, .form-field textarea::placeholder { color: #b0bec8; }
+  .contact-submit {
+    font-family: 'Poppins', sans-serif; font-size: 0.95rem; font-weight: 600; color: #ffffff;
+    background: #093E78; border: none; cursor: pointer;
+    padding: 13px 28px; border-radius: 10px;
+    display: inline-flex; align-items: center; gap: 10px;
+    transition: background 0.2s, gap 0.25s;
+  }
+  .contact-submit:hover { background: #0a4d91; gap: 16px; }
+  .contact-submit svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.2; transition: transform 0.25s; }
+  .contact-submit:hover svg { transform: translateX(3px); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .slot, .slot.slot--img-left { grid-template-columns: 1fr; gap: 40px; }
+    .slot-left { order: 2; transform: none !important; }
+    .slot-media { order: 1; }
+    .slot-media.dual { height: 380px; }
+    .contact-inner { grid-template-columns: 1fr; gap: 60px; }
+    .contact-left h2 { font-size: 40px; }
+  }
+  @media (max-width: 760px) {
+    .page-hero-content { padding: 0 24px 56px; }
+    .service-section { padding: 100px 0; }
+    .service-inner { padding: 0 24px; }
+    .statement-section { padding: 120px 0; }
+    .statement-inner { padding: 0 24px; }
+    .contact-section { padding: 100px 0; }
+    .contact-inner { padding: 0 24px; }
+    .contact-left h2 { font-size: 32px; }
+    .contact-form { padding: 28px 20px; grid-template-columns: 1fr; }
+    .slot-media.dual { height: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <!-- Logotyp -->
+    <a class="nav-logo" href="index.html">
+      <div class="nav-logo-mark">
+        <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2 13 L8 3 L14 13 Z"/>
+        </svg>
+      </div>
+      <span class="nav-logo-text">Bovi<span>sion</span></span>
+    </a>
+
+    <!-- Primära länkar -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#">Sök bostad</a></li>
+      <li><a href="#" class="active">Tjänster</a></li>
+      <li><a href="#">Inspiration</a></li>
+    </ul>
+
+    <!-- Login -->
+    <a class="nav-login" href="#">Logga in</a>
+
+    <!-- Hamburger (mobil) -->
+    <button class="nav-toggle" id="navToggle" aria-label="Meny" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<main>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-content">
+      <div class="page-hero-text">
+        <ol class="page-hero-breadcrumb" aria-label="Brödsmulor">
+          <li><a href="index.html">Bovision Media</a></li>
+          <li>Digital annonsering</li>
+        </ol>
+        <h1>Digital<br><em>annonsering</em></h1>
+        <p class="page-hero-desc">Från annonskonto till kampanj — vi hjälper er att nå rätt målgrupp i rätt kanal, med annonser som faktiskt ger resultat.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE 1 -->
+  <section class="service-section palette-s1">
+    <div class="service-inner">
+      <div class="slot">
+        <div class="slot-left">
+          <div class="slot-caption">
+            <span class="slot-number">01 — Sociala medier</span>
+            <h2>Annonsering i<br><em>sociala medier</em></h2>
+            <p>Har ni aldrig annonserat i sociala medier? Eller upplever ni att era annonser inte ger önskad effekt? Vi erbjuder hjälp med både uppsättning av annonskonton och hantering av kampanjer. Vi kan även hjälpa er skapa framgångsrika kampanjer från start till mål, med goda resultat.</p>
+          </div>
+        </div>
+        <div class="slot-media">
+          <div class="img-main"><img src="bild1.jpg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE 2 -->
+  <section class="service-section palette-s2">
+    <div class="service-inner">
+      <div class="slot slot--img-left">
+        <div class="slot-left">
+          <div class="slot-caption">
+            <span class="slot-number">02 — Kontouppsättning</span>
+            <h2>Annonsekonto&shy;<em>uppsättning</em></h2>
+            <p>Vi sätter upp era annonskonton i både Meta och Google och ser till att allt fungerar från start. Vi hjälper även till med pixelinstallation i Meta och guidar er genom hela processen, så ni snabbt kan börja nå rätt målgrupper och driva fler affärer.</p>
+          </div>
+        </div>
+        <div class="slot-media dual">
+          <div class="img-back"><img src="bild1.jpg" alt=""></div>
+          <div class="img-front"><img src="bild1.jpg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATEMENT — parallax + word reveal, between 02 and 03 -->
+  <section class="statement-section" id="statement">
+    <div class="statement-bg" id="statementBg">
+      <img src="bild1.jpg" alt="">
+    </div>
+    <div class="statement-overlay"></div>
+    <div class="statement-inner">
+      <p id="revealText">Rätt annons i rätt kanal — det är skillnaden mellan att synas och att sälja.</p>
+    </div>
+  </section>
+
+  <!-- SERVICE 3 -->
+  <section class="service-section palette-s3">
+    <div class="service-inner">
+      <div class="slot">
+        <div class="slot-left">
+          <div class="slot-caption">
+            <span class="slot-number">03 — Google &amp; Youtube</span>
+            <h2>Annonsering på<br><em>Google &amp; Youtube</em></h2>
+            <p>Våra experter inom digital marknadsföring ger er skräddarsydd rådgivning om hur ni på bästa sätt kommer igång med annonsering på Google. Vi kan erbjuda hjälp med att sätta upp annonskonto och guida er hur ni snabbt kommer igång och arbetar med verktyget. Vi kan även sätta upp kampanjer åt er som får ert varumärke att synas vid precis rätt tidpunkt.</p>
+          </div>
+        </div>
+        <div class="slot-media">
+          <div class="img-landscape"><img src="bild1.jpg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICE 4 -->
+  <section class="service-section palette-s4">
+    <div class="service-inner">
+      <div class="slot slot--img-left">
+        <div class="slot-left">
+          <div class="slot-caption">
+            <span class="slot-number">04 — Optimering</span>
+            <h2>Annonserings&shy;<em>optimering</em></h2>
+            <p>För att annonserna ska ge maximal avkastning behöver de optimeras löpande. Vi finjusterar era annonser så att de presterar på högsta möjliga nivå — med bättre träffsäkerhet, lägre kostnader och fler kvalificerade leads.</p>
+          </div>
+        </div>
+        <div class="slot-media">
+          <div class="img-square"><img src="bild1.jpg" alt=""></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="kontakt">
+    <div class="contact-inner">
+      <div class="contact-left">
+        <h2>Redo att ta<br><em>nästa steg?</em></h2>
+        <p>Lämna dina kontaktuppgifter så återkommer vi och berättar mer om hur vi kan hjälpa er att nå er målgrupp med rätt budskap.</p>
+      </div>
+      <div class="contact-form">
+        <div class="form-field">
+          <label for="field-fornamn">Förnamn</label>
+          <input id="field-fornamn" type="text" placeholder="Ditt förnamn" autocomplete="given-name">
+        </div>
+        <div class="form-field">
+          <label for="field-efternamn">Efternamn</label>
+          <input id="field-efternamn" type="text" placeholder="Ditt efternamn" autocomplete="family-name">
+        </div>
+        <div class="form-field">
+          <label for="field-telefon">Telefon</label>
+          <input id="field-telefon" type="tel" placeholder="07X-XXX XX XX" autocomplete="tel">
+        </div>
+        <div class="form-field">
+          <label for="field-foretag">Företag</label>
+          <input id="field-foretag" type="text" placeholder="Ditt företag" autocomplete="organization">
+        </div>
+        <div class="form-field full">
+          <label for="field-meddelande">Meddelande</label>
+          <textarea id="field-meddelande" placeholder="Berätta om era behov..."></textarea>
+        </div>
+        <div class="full" style="display:flex;align-items:center;gap:10px;grid-column:1/-1;">
+          <input id="field-gdpr" type="checkbox" style="accent-color:#FF5E00;width:16px;height:16px;flex-shrink:0;cursor:pointer;">
+          <label for="field-gdpr" style="font-size:0.85rem;color:#5a6a7a;line-height:1;cursor:pointer;">Jag accepterar Bovisions <a href="#" style="color:#FF5E00;text-decoration:underline;text-underline-offset:3px;">integritetspolicy</a>.</label>
+        </div>
+        <div style="grid-column:1/-1;">
+          <button class="contact-submit">
+            Skicka
+            <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ── NAV: scroll state + hamburger ── */
+(function() {
+  const nav = document.getElementById('mainNav');
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  addEventListener('scroll', () => { nav.classList.toggle('scrolled', scrollY > 40); }, { passive: true });
+  function close() { links.classList.remove('open'); toggle.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); }
+  toggle.addEventListener('click', () => {
+    const open = links.classList.toggle('open');
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (!t) return; e.preventDefault();
+      t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+})();
+
+/* ── SLOT SLIDE-IN ── */
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in-view'); obs.unobserve(e.target); } });
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.slot-left').forEach(el => obs.observe(el));
+})();
+
+/* ── IMAGE SLIDE-IN FROM BOTTOM ── */
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          e.target.classList.add('in-view');
+        }, 120);
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  document.querySelectorAll('.slot-media').forEach(el => obs.observe(el));
+})();
+
+/* ── STATEMENT: parallax background ── */
+(function() {
+  const section = document.getElementById('statement');
+  const bg = document.getElementById('statementBg');
+  if (!section || !bg) return;
+  function onScroll() {
+    const rect = section.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const progress = (vh - rect.top) / (vh + rect.height);
+    const offset = (progress - 0.5) * 260;
+    bg.style.transform = `translateY(${offset}px)`;
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+
+/* ── STATEMENT: word reveal on scroll ── */
+(function() {
+  const el = document.getElementById('revealText');
+  if (!el) return;
+  const words = el.textContent.split(' ');
+  el.innerHTML = words.map(w => `<span class="reveal-word">${w} </span>`).join('');
+  const spans = [...el.querySelectorAll('.reveal-word')];
+  function onScroll() {
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const start = vh * 0.9;
+    const end   = vh * 0.5;
+    const totalRange = start - end;
+    const wordRange = totalRange / spans.length;
+    spans.forEach((span, i) => {
+      const threshold = start - i * wordRange;
+      if (rect.top < threshold) {
+        span.classList.add('lit');
+      } else {
+        span.classList.remove('lit');
+      }
+    });
+  }
+  addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+
+</body>
+</html>
